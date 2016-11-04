@@ -1,0 +1,5 @@
+1.WebkitGTK+还需要安装libsoupdev,webkitgtk-dev
+
+2.Geany编译命令：gcc --std=c99 -o "%e" "%f" -lm `pkg-config --cflags --libs webkit-1.0`
+
+3.打开网址显示：SSL handshake failed

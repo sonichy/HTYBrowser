@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>收藏夹</title>
+<meta charset="UTF-8">
+<link rel="icon" href="favicon.ico">
+</head>
+<style>
+a{text-decoration:none;}
+span{display:inline-block;margin:5px;}
+.operation{color:white;}
+.operation:hover{cursor:hand;color:black;}
+</style>
+<body>
+<h1 align=center>网址收藏夹</h1>
+<div align=center><input type=text id=website placeholder="http://www." value="http://www."> <button id=btnAdd>添加</button></div><br>
+<div id=list></div>
+<p align=center>&copy;&nbsp;Copyright 2016 版权所有 海天鹰出品 sonichy@163.com</p>
+</body>
+</html>
+<script>
+var json,id;
+var website=document.getElementById('website');
+var btnAdd=document.getElementById('btnAdd');
+var list=document.getElementById('list');
+if(!localStorage.webfav)localStorage.webfav='[]';
+webfav=localStorage.webfav;
+
+function loadlist(){
+ json = JSON.parse(localStorage.webfav);
+ list.innerHTML = '';
+ for (var i = 0; i < json.length; i++) {
+  var span = document.createElement('span');
+  var spanmdf = document.createElement('span');
+  spanmdf.id='mdf'+i;
+  spanmdf.className='operation';
+  spanmdf.textContent='改';
+  span.appendChild(spanmdf);
+  var a = document.createElement('a');
+  a.href=json[i].website;
+  //a.target='_blank';
+  var img=document.createElement('img');
+  img.src=a.href+'favicon.ico';
+  img.style.width='50px';
+  img.style.height='50px';
+  var hostname=json[i].website.substring(json[i].website.indexOf('.')+1);  
+  hostname=hostname.substring(0,hostname.indexOf('.'));
+  img.title=hostname;
+  img.alt=hostname;
+  a.appendChild(img);
+  span.appendChild(a);
+  var spandel = document.createElement('span');
+  spandel.id='del'+i;
+  spandel.className='operation';
+  spandel.textContent='删';
+  span.appendChild(spandel);
+  list.appendChild(span);
+  document.getElementById('del' + i).addEventListener('click', function () {
+    del(this.id.substring(3));
+  }, false);
+ document.getElementById('mdf' + i).addEventListener('click', function () {
+    mdf(this.id.substring(3));
+   }, false);
+ }
+ console.log(localStorage.webfav);
+}
+
+btnAdd.addEventListener('click',function(){
+ if(btnAdd.textContent=='添加'){
+  json = JSON.parse(localStorage.webfav);
+  json.unshift({ "website" : website.value });
+  localStorage.webfav = JSON.stringify(json); 
+  loadlist();
+ }
+ if(btnAdd.textContent=='修改'){
+  json[id].website=website.value;
+  btnAdd.textContent=='添加';
+  localStorage.webfav = JSON.stringify(json); 
+  loadlist();
+ }
+},false);
+
+function del(i) {
+ console.log('del'+i);
+ json = JSON.parse(localStorage.webfav);
+ json.splice(i, 1);
+ localStorage.webfav = JSON.stringify(json);
+ loadlist();
+}
+
+function mdf(i) {
+ website.value=json[i].website;
+ btnAdd.textContent='修改';
+ id=i;
+}
+
+loadlist();
+</script>

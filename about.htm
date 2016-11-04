@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="icon" href="favicon.ico">
+<title>关于</title>
+<style>
+body{padding:1em;}
+h1{text-align:center;}
+p{text-indent:2em;}
+</style>
+</head>
+<body>
+<h1>海天鹰浏览器 2.0</h1>
+<p>基于 WebKitGTK+ 的多标签浏览器。</p>
+<p>作者：黄颖</p>
+<p>QQ：84429027</p>
+<p>E-mail：sonichy@163.com</p>
+<h2>更新日志：</h2>
+<h2>2.0 (2016-03)</h2>
+<ol>
+<li>多窗口改多标签，加入增加新标签、关闭按钮。</li>
+<li>标签过多挤大窗口，使用 gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook),TRUE)，标签超过窗体显示移动箭头解决。</li>
+<li>滚动窗体无法响应翻页键和方向键，gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled),GTK_WIDGET(webview)) 改成 gtk_container_add(GTK_CONTAINER(scrolled), GTK_WIDGET(webview)) 解决。</li>
+<li>标签关闭按钮无法居右，用 gtk_box_pack_end 代替 gtk_box_pack_start 解决。</li>
+<li>switch-page标签序号不对,用 g_signal_connect_after 代替 g_signal_connect 解决。</li>
+<li>增加F5按键刷新当前页的功能。</li>
+<li>标签关闭按钮关闭其所在标签页成功。</li>
+<li>增加弹出式主菜单。</li>
+<li>获取当前路径替换绝对路径，载入本地网页。</li>
+<li>支持下载了，但是会崩溃，取消g_thread，不崩溃了。</li>
+<li>Ctrl+F显示查找窗体，顶置，任务栏不显示，Esc隐藏查找窗体，回车键查找下一个，按钮查找上一个、下一个，最小化隐藏查找窗体，关闭查找窗取消高亮。</li>
+<li>下载文件由固定路径改为路径选择对话框。</li>
+<li>key-press-event会使默认快捷键(webview的翻页和方向快捷键)失效，使用GtkAccelGroup增加快捷键，不会对默认快捷键产生影响。</li>
+<li>使用 g_get_current_dir 替代 getcwd ，还是没有解决 desktop 快捷方式启动后的路径是 /home/administrator/ ，而不是程序所在路径，导致无法载入相对路径下的文件。<br>
+快捷方式使用bash启动，解决快捷方式路径问题，重启后从系统开始菜单启动路径也对了，但是依然无法对文件使用右键打开。
+<pre>
+#!/bin/bash
+FILE_PATH="`readlink -f "$0"`"
+cd "`dirname "$FILE_PATH"`"
+exec "./HTYBrowser" "$@"
+</pre>
+</li>
+<li>搜索框增加搜索到的数目。</li>
+<li>用 gtk_label_set_width_chars 限制便签文字长度，解决溢出问题。</li>
+<li>title-changed 信号函数增加修改标题，解决打开标签无标题的问题。</li>
+<li>通过 icon-loaded 信号函数监听修改 favicon ，终于可以修改标签的图标了。</li>
+<li>增加查看源码功能。</li>
+<li>使用 gdk_pixbuf_scale_simple 实现修改标签栏图标大小。</li>
+</ol>
+<h2>1.0 (2016-03)</h2>
+<ol>
+<li>实现浏览器功能，加入地址栏、进入、前进、后退按钮，加入进度条，加入状态栏。</li>
+<li>点击链接打开新窗口。</li>
+</ol>
+</body>
+</html>
